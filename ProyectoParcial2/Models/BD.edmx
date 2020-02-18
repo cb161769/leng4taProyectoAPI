@@ -1,0 +1,381 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="BD_LENG4TA_2DOPARCIALModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="CLientes">
+          <Key>
+            <PropertyRef Name="cli_ID" />
+          </Key>
+          <Property Name="cli_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Nombre" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="Apellido" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="Cedula" Type="varchar" MaxLength="14" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Compra">
+          <Key>
+            <PropertyRef Name="comp_id" />
+          </Key>
+          <Property Name="comp_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="cli_id" Type="int" />
+          <Property Name="prod_id" Type="int" />
+        </EntityType>
+        <EntityType Name="Factura">
+          <Key>
+            <PropertyRef Name="Fact_id" />
+          </Key>
+          <Property Name="Fact_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="DESCRIPcion" Type="varchar" MaxLength="100" />
+          <Property Name="comp_id" Type="int" />
+        </EntityType>
+        <EntityType Name="Marca">
+          <Key>
+            <PropertyRef Name="mar_id" />
+          </Key>
+          <Property Name="mar_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Nombre" Type="varchar" MaxLength="10" />
+        </EntityType>
+        <EntityType Name="producto">
+          <Key>
+            <PropertyRef Name="prod_id" />
+          </Key>
+          <Property Name="prod_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="nombre" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="mar_id" Type="int" />
+          <Property Name="tipoPRod_id" Type="int" />
+          <Property Name="precio" Type="decimal" Precision="10" Scale="2" />
+        </EntityType>
+        <EntityType Name="tipo">
+          <Key>
+            <PropertyRef Name="tipoPRod_id" />
+          </Key>
+          <Property Name="tipoPRod_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="nombre" Type="varchar" MaxLength="20" />
+        </EntityType>
+        <Association Name="FK__Compra__cli_id__4222D4EF">
+          <End Role="CLientes" Type="Self.CLientes" Multiplicity="0..1" />
+          <End Role="Compra" Type="Self.Compra" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CLientes">
+              <PropertyRef Name="cli_ID" />
+            </Principal>
+            <Dependent Role="Compra">
+              <PropertyRef Name="cli_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Compra__prod_id__4316F928">
+          <End Role="producto" Type="Self.producto" Multiplicity="0..1" />
+          <End Role="Compra" Type="Self.Compra" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="producto">
+              <PropertyRef Name="prod_id" />
+            </Principal>
+            <Dependent Role="Compra">
+              <PropertyRef Name="prod_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Factura__comp_id__45F365D3">
+          <End Role="Compra" Type="Self.Compra" Multiplicity="0..1" />
+          <End Role="Factura" Type="Self.Factura" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Compra">
+              <PropertyRef Name="comp_id" />
+            </Principal>
+            <Dependent Role="Factura">
+              <PropertyRef Name="comp_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__producto__mar_id__3E52440B">
+          <End Role="Marca" Type="Self.Marca" Multiplicity="0..1" />
+          <End Role="producto" Type="Self.producto" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Marca">
+              <PropertyRef Name="mar_id" />
+            </Principal>
+            <Dependent Role="producto">
+              <PropertyRef Name="mar_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__producto__tipoPR__3F466844">
+          <End Role="tipo" Type="Self.tipo" Multiplicity="0..1" />
+          <End Role="producto" Type="Self.producto" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tipo">
+              <PropertyRef Name="tipoPRod_id" />
+            </Principal>
+            <Dependent Role="producto">
+              <PropertyRef Name="tipoPRod_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="BD_LENG4TA_2DOPARCIALModelStoreContainer">
+          <EntitySet Name="CLientes" EntityType="Self.CLientes" Schema="CLientes" store:Type="Tables" />
+          <EntitySet Name="Compra" EntityType="Self.Compra" Schema="Facturacion" store:Type="Tables" />
+          <EntitySet Name="Factura" EntityType="Self.Factura" Schema="Facturacion" store:Type="Tables" />
+          <EntitySet Name="Marca" EntityType="Self.Marca" Schema="Productos" store:Type="Tables" />
+          <EntitySet Name="producto" EntityType="Self.producto" Schema="Productos" store:Type="Tables" />
+          <EntitySet Name="tipo" EntityType="Self.tipo" Schema="Productos" store:Type="Tables" />
+          <AssociationSet Name="FK__Compra__cli_id__4222D4EF" Association="Self.FK__Compra__cli_id__4222D4EF">
+            <End Role="CLientes" EntitySet="CLientes" />
+            <End Role="Compra" EntitySet="Compra" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Compra__prod_id__4316F928" Association="Self.FK__Compra__prod_id__4316F928">
+            <End Role="producto" EntitySet="producto" />
+            <End Role="Compra" EntitySet="Compra" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Factura__comp_id__45F365D3" Association="Self.FK__Factura__comp_id__45F365D3">
+            <End Role="Compra" EntitySet="Compra" />
+            <End Role="Factura" EntitySet="Factura" />
+          </AssociationSet>
+          <AssociationSet Name="FK__producto__mar_id__3E52440B" Association="Self.FK__producto__mar_id__3E52440B">
+            <End Role="Marca" EntitySet="Marca" />
+            <End Role="producto" EntitySet="producto" />
+          </AssociationSet>
+          <AssociationSet Name="FK__producto__tipoPR__3F466844" Association="Self.FK__producto__tipoPR__3F466844">
+            <End Role="tipo" EntitySet="tipo" />
+            <End Role="producto" EntitySet="producto" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="BD_LENG4TA_2DOPARCIALModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="CLiente">
+          <Key>
+            <PropertyRef Name="cli_ID" />
+          </Key>
+          <Property Name="cli_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Nombre" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Apellido" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Cedula" Type="String" MaxLength="14" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="Compras" Relationship="Self.FK__Compra__cli_id__4222D4EF" FromRole="CLientes" ToRole="Compra" />
+        </EntityType>
+        <EntityType Name="Compra">
+          <Key>
+            <PropertyRef Name="comp_id" />
+          </Key>
+          <Property Name="comp_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="cli_id" Type="Int32" />
+          <Property Name="prod_id" Type="Int32" />
+          <NavigationProperty Name="CLiente" Relationship="Self.FK__Compra__cli_id__4222D4EF" FromRole="Compra" ToRole="CLientes" />
+          <NavigationProperty Name="producto" Relationship="Self.FK__Compra__prod_id__4316F928" FromRole="Compra" ToRole="producto" />
+          <NavigationProperty Name="Facturas" Relationship="Self.FK__Factura__comp_id__45F365D3" FromRole="Compra" ToRole="Factura" />
+        </EntityType>
+        <EntityType Name="Factura">
+          <Key>
+            <PropertyRef Name="Fact_id" />
+          </Key>
+          <Property Name="Fact_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="DESCRIPcion" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="comp_id" Type="Int32" />
+          <NavigationProperty Name="Compra" Relationship="Self.FK__Factura__comp_id__45F365D3" FromRole="Factura" ToRole="Compra" />
+        </EntityType>
+        <EntityType Name="Marca">
+          <Key>
+            <PropertyRef Name="mar_id" />
+          </Key>
+          <Property Name="mar_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Nombre" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="productoes" Relationship="Self.FK__producto__mar_id__3E52440B" FromRole="Marca" ToRole="producto" />
+        </EntityType>
+        <EntityType Name="producto">
+          <Key>
+            <PropertyRef Name="prod_id" />
+          </Key>
+          <Property Name="prod_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="nombre" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="mar_id" Type="Int32" />
+          <Property Name="tipoPRod_id" Type="Int32" />
+          <Property Name="precio" Type="Decimal" Precision="10" Scale="2" />
+          <NavigationProperty Name="Compras" Relationship="Self.FK__Compra__prod_id__4316F928" FromRole="producto" ToRole="Compra" />
+          <NavigationProperty Name="Marca" Relationship="Self.FK__producto__mar_id__3E52440B" FromRole="producto" ToRole="Marca" />
+          <NavigationProperty Name="tipo" Relationship="Self.FK__producto__tipoPR__3F466844" FromRole="producto" ToRole="tipo" />
+        </EntityType>
+        <EntityType Name="tipo">
+          <Key>
+            <PropertyRef Name="tipoPRod_id" />
+          </Key>
+          <Property Name="tipoPRod_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="nombre" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="productoes" Relationship="Self.FK__producto__tipoPR__3F466844" FromRole="tipo" ToRole="producto" />
+        </EntityType>
+        <Association Name="FK__Compra__cli_id__4222D4EF">
+          <End Role="CLientes" Type="Self.CLiente" Multiplicity="0..1" />
+          <End Role="Compra" Type="Self.Compra" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CLientes">
+              <PropertyRef Name="cli_ID" />
+            </Principal>
+            <Dependent Role="Compra">
+              <PropertyRef Name="cli_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Compra__prod_id__4316F928">
+          <End Role="producto" Type="Self.producto" Multiplicity="0..1" />
+          <End Role="Compra" Type="Self.Compra" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="producto">
+              <PropertyRef Name="prod_id" />
+            </Principal>
+            <Dependent Role="Compra">
+              <PropertyRef Name="prod_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Factura__comp_id__45F365D3">
+          <End Role="Compra" Type="Self.Compra" Multiplicity="0..1" />
+          <End Role="Factura" Type="Self.Factura" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Compra">
+              <PropertyRef Name="comp_id" />
+            </Principal>
+            <Dependent Role="Factura">
+              <PropertyRef Name="comp_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__producto__mar_id__3E52440B">
+          <End Role="Marca" Type="Self.Marca" Multiplicity="0..1" />
+          <End Role="producto" Type="Self.producto" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Marca">
+              <PropertyRef Name="mar_id" />
+            </Principal>
+            <Dependent Role="producto">
+              <PropertyRef Name="mar_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__producto__tipoPR__3F466844">
+          <End Role="tipo" Type="Self.tipo" Multiplicity="0..1" />
+          <End Role="producto" Type="Self.producto" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tipo">
+              <PropertyRef Name="tipoPRod_id" />
+            </Principal>
+            <Dependent Role="producto">
+              <PropertyRef Name="tipoPRod_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="BD_LENG4TA_2DOPARCIALEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="CLientes" EntityType="Self.CLiente" />
+          <EntitySet Name="Compras" EntityType="Self.Compra" />
+          <EntitySet Name="Facturas" EntityType="Self.Factura" />
+          <EntitySet Name="Marcas" EntityType="Self.Marca" />
+          <EntitySet Name="productoes" EntityType="Self.producto" />
+          <EntitySet Name="tipoes" EntityType="Self.tipo" />
+          <AssociationSet Name="FK__Compra__cli_id__4222D4EF" Association="Self.FK__Compra__cli_id__4222D4EF">
+            <End Role="CLientes" EntitySet="CLientes" />
+            <End Role="Compra" EntitySet="Compras" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Compra__prod_id__4316F928" Association="Self.FK__Compra__prod_id__4316F928">
+            <End Role="producto" EntitySet="productoes" />
+            <End Role="Compra" EntitySet="Compras" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Factura__comp_id__45F365D3" Association="Self.FK__Factura__comp_id__45F365D3">
+            <End Role="Compra" EntitySet="Compras" />
+            <End Role="Factura" EntitySet="Facturas" />
+          </AssociationSet>
+          <AssociationSet Name="FK__producto__mar_id__3E52440B" Association="Self.FK__producto__mar_id__3E52440B">
+            <End Role="Marca" EntitySet="Marcas" />
+            <End Role="producto" EntitySet="productoes" />
+          </AssociationSet>
+          <AssociationSet Name="FK__producto__tipoPR__3F466844" Association="Self.FK__producto__tipoPR__3F466844">
+            <End Role="tipo" EntitySet="tipoes" />
+            <End Role="producto" EntitySet="productoes" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="BD_LENG4TA_2DOPARCIALModelStoreContainer" CdmEntityContainer="BD_LENG4TA_2DOPARCIALEntities">
+          <EntitySetMapping Name="CLientes">
+            <EntityTypeMapping TypeName="BD_LENG4TA_2DOPARCIALModel.CLiente">
+              <MappingFragment StoreEntitySet="CLientes">
+                <ScalarProperty Name="cli_ID" ColumnName="cli_ID" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="Apellido" ColumnName="Apellido" />
+                <ScalarProperty Name="Cedula" ColumnName="Cedula" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Compras">
+            <EntityTypeMapping TypeName="BD_LENG4TA_2DOPARCIALModel.Compra">
+              <MappingFragment StoreEntitySet="Compra">
+                <ScalarProperty Name="comp_id" ColumnName="comp_id" />
+                <ScalarProperty Name="cli_id" ColumnName="cli_id" />
+                <ScalarProperty Name="prod_id" ColumnName="prod_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Facturas">
+            <EntityTypeMapping TypeName="BD_LENG4TA_2DOPARCIALModel.Factura">
+              <MappingFragment StoreEntitySet="Factura">
+                <ScalarProperty Name="Fact_id" ColumnName="Fact_id" />
+                <ScalarProperty Name="DESCRIPcion" ColumnName="DESCRIPcion" />
+                <ScalarProperty Name="comp_id" ColumnName="comp_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Marcas">
+            <EntityTypeMapping TypeName="BD_LENG4TA_2DOPARCIALModel.Marca">
+              <MappingFragment StoreEntitySet="Marca">
+                <ScalarProperty Name="mar_id" ColumnName="mar_id" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="productoes">
+            <EntityTypeMapping TypeName="BD_LENG4TA_2DOPARCIALModel.producto">
+              <MappingFragment StoreEntitySet="producto">
+                <ScalarProperty Name="prod_id" ColumnName="prod_id" />
+                <ScalarProperty Name="nombre" ColumnName="nombre" />
+                <ScalarProperty Name="mar_id" ColumnName="mar_id" />
+                <ScalarProperty Name="tipoPRod_id" ColumnName="tipoPRod_id" />
+                <ScalarProperty Name="precio" ColumnName="precio" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tipoes">
+            <EntityTypeMapping TypeName="BD_LENG4TA_2DOPARCIALModel.tipo">
+              <MappingFragment StoreEntitySet="tipo">
+                <ScalarProperty Name="tipoPRod_id" ColumnName="tipoPRod_id" />
+                <ScalarProperty Name="nombre" ColumnName="nombre" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
