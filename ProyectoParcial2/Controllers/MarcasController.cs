@@ -2,117 +2,81 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
-using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Net;
-using System.Net.Http;
-using System.Web.Http;
-using System.Web.Http.Description;
+using System.Web;
+using System.Web.Mvc;
 using ProyectoParcial2.Models;
 
 namespace ProyectoParcial2.Controllers
 {
-    public class MarcasController : ApiController
+    public class MarcasController : Controller
     {
-        private BD_LENG4TA_2DOPARCIALEntities db = new BD_LENG4TA_2DOPARCIALEntities();
+        MarcAPIController record = new MarcAPIController();
 
-        // GET: api/Marcas
-        public IQueryable<Marca> GetMarcas()
+        // GET: Marcas
+        public ActionResult Index()
         {
-            return db.Marcas;
+            return View(record.Get());
         }
 
-        // GET: api/Marcas/5
-        [ResponseType(typeof(Marca))]
-        public IHttpActionResult GetMarca(int id)
-        {
-            Marca marca = db.Marcas.Find(id);
-            if (marca == null)
-            {
-                return NotFound();
-            }
+        // GET: Marcas/Details/5
+      
 
-            return Ok(marca);
+        // GET: Marcas/Create
+        public ActionResult Create()
+        {
+            return View();
         }
 
-        // PUT: api/Marcas/5
-        [ResponseType(typeof(void))]
-        public IHttpActionResult PutMarca(int id, Marca marca)
+        // POST: Marcas/Create
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Create(Marca item)
         {
-            if (!ModelState.IsValid)
+            if (ModelState.IsValid)
             {
-                return BadRequest(ModelState);
+                record.Agregar(item);
+                return RedirectToAction("Index");
             }
 
-            if (id != marca.mar_id)
-            {
-                return BadRequest();
-            }
-
-            db.Entry(marca).State = EntityState.Modified;
-
-            try
-            {
-                db.SaveChanges();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!MarcaExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return StatusCode(HttpStatusCode.NoContent);
+            return RedirectToAction("Index");
         }
 
-        // POST: api/Marcas
-        [ResponseType(typeof(Marca))]
-        public IHttpActionResult PostMarca(Marca marca)
+        // GET: Marcas/Edit/5
+        public ActionResult Edit(int id)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            db.Marcas.Add(marca);
-            db.SaveChanges();
-
-            return CreatedAtRoute("DefaultApi", new { id = marca.mar_id }, marca);
+            return View(record.GetID(id));
         }
 
-        // DELETE: api/Marcas/5
-        [ResponseType(typeof(Marca))]
-        public IHttpActionResult DeleteMarca(int id)
+        // POST: Marcas/Edit/5
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Edit(Marca item)
         {
-            Marca marca = db.Marcas.Find(id);
-            if (marca == null)
-            {
-                return NotFound();
-            }
-
-            db.Marcas.Remove(marca);
-            db.SaveChanges();
-
-            return Ok(marca);
+            record.Actualizar(item);
+            return RedirectToAction("Index");
         }
 
-        protected override void Dispose(bool disposing)
+        // GET: Marcas/Delete/5
+        public ActionResult Delete(int id)
         {
-            if (disposing)
-            {
-                db.Dispose();
-            }
-            base.Dispose(disposing);
+            return View(record.GetID(id));
         }
 
-        private bool MarcaExists(int id)
+        // POST: Marcas/Delete/5
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public ActionResult DeleteConfirmed(string id)
         {
-            return db.Marcas.Count(e => e.mar_id == id) > 0;
+            record.Eliminar(int.Parse(id));
+            return RedirectToAction("Index");
         }
+
+        
     }
 }
